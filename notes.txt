@@ -1,0 +1,17 @@
+
+
+-- Library web application backend design
+
+-- three types of user
+1) General user, who can only do get operations like search for books or search for particular book.
+2) staff, who can edit books info, add new books all CRUD functions
+3) admin who can perform CRUD, even delete staff or change info of staff or general user
+
+-- routes needed 
+- Books
+1)GET		 /collections/books  
+2) POST 		/collections/books/search/title=?
+3) GET		/collection/book/id
+
+
+
