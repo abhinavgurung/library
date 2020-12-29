@@ -13,24 +13,16 @@ const connectDB = async () => {
     });
 
     success({
-      message: `Successfully connected with the Database \n${DB}`,
+      message: `Successfully connected with the Database \n`,
       badge: true,
     });
-
-    // // Start Listenting for the server on PORT
-    // app.listen(PORT, () =>
-    //   success({
-    //     message: `Server started on PORT ${PORT}`,
-    //     badge: true,
-    //   }),
-    // );
   } catch (err) {
     error({
       message: `Unable to connect with Database \n${err}`,
       badge: true,
     });
   }
-  connectDB();
+  // connectDB();
 };
 
 module.exports = connectDB;

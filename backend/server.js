@@ -3,25 +3,12 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { success, error } = require('consola');
+const { connect } = require('mongoose');
 
-const { PORT } = require('./config/config.js');
+const { DB, PORT } = require('./config/config.js');
 const connectDB = require('./config/db');
 
-//connect to database
-if (connectDB()) {
-  app.listen(
-    PORT,
-    () =>
-      success({
-        message: `Server started on PORT ${PORT}`,
-        badge: true,
-      }),
-    error({
-      message: `Unable to start Server \n${err}`,
-      badge: true,
-    }),
-  );
-}
+connectDB();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,31 +28,27 @@ app.use(bodyParser.json());
 //       message: `Successfully connected with the Database \n${DB}`,
 //       badge: true,
 //     });
-
-//     // Start Listenting for the server on PORT
-//     app.listen(PORT, () =>
-//       success({
-//         message: `Server started on PORT ${PORT}`,
-//         badge: true,
-//       }),
-//     );
 //   } catch (err) {
 //     error({
 //       message: `Unable to connect with Database \n${err}`,
 //       badge: true,
 //     });
-//     startApp();
 //   }
 // };
 
 //user routes
-app.use('/api/users/', require('./routes/userRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 //books routes
-app.use('/api/books/', require('./routes/bookRoutes'));
+app.use('/api/books', require('./routes/bookRoutes'));
 //home page--testing purpose
 app.get('/', (req, res) => {
   res.send('here it is');
+});
+
+// 404 Handler
+app.use((req, res, next) => {
+  next(createHttpError.NotFound());
 });
 
 app.listen(PORT, () => {

@@ -15,3 +15,10 @@
 
 
 
+
+-- user routers
+1) GET		/collections/users
+2)POST		/collections/create
+3)POST		
+
+

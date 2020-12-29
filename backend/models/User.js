@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const roles = require('../utils/roles');
 
 const UserSchema = new Schema(
   {
@@ -20,7 +22,8 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      default: 'User',
+      enum: [roles.admin, roles.client],
+      default: roles.client,
     },
   },
   { timestamps: true }, // gives createdAt and updatedAt
