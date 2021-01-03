@@ -4,6 +4,7 @@ const router = express.Router();
 
 const bookController = require('../controllers/bookController');
 
+//get all the books
 router.get('/collection', (req, res) => {
   bookController.getAllBooks(req, res);
 });
