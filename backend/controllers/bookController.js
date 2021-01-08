@@ -2,6 +2,8 @@ const Author = require('../models/Author');
 const Book = require('../models/Book');
 const AuthorService = require('../services/AuthorService');
 const BookService = require('../services/bookServices');
+const createError = require('http-errors');
+const mongoose = require('mongoose');
 
 // Get all the books
 const getAllBooks = async (req, res) => {
@@ -94,7 +96,31 @@ const addBook = async (req, res) => {
   }
 };
 
+const getBookByIsbn = async (req, res, next) => {
+  try {
+    const isbn = req.params.isbn;
+    if (!isbn) {
+      res.status(400).json({ msg: 'no id was sent' });
+    }
+
+    const book = await BookService.getBook(isbn);
+    if (!book) {
+      res.status(500).json({ msg: 'No Book found with that isbn' });
+    } else {
+      res.status(200).send(book);
+    }
+  } catch (error) {
+    console.log(error.message);
+    if (error instanceof mongoose.CastError) {
+      next(createError(400, 'Invalid Product id'));
+      return;
+    }
+    next(error);
+  }
+};
+
 module.exports = {
   getAllBooks,
   addBook,
+  getBookByIsbn,
 };

@@ -1,3 +1,4 @@
+const createHttpError = require('http-errors');
 const Book = require('../models/Book');
 
 //get all te books in the collection
@@ -17,7 +18,17 @@ const addBook = async (book) => {
   }
 };
 
+const getBook = async (isbn) => {
+  try {
+    const result = await Book.findOne({ isbn });
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+};
 module.exports = {
   getAllBooks,
   addBook,
+  getBook,
 };

@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { success, error } = require('consola');
 const { connect } = require('mongoose');
+const createError = require('http-errors');
 
 const { DB, PORT } = require('./config/config.js');
 const connectDB = require('./config/db');
@@ -46,9 +47,21 @@ app.get('/', (req, res) => {
   res.send('here it is');
 });
 
-// 404 Handler
+// 404 Handler and pass error to controller
 app.use((req, res, next) => {
-  next(createHttpError.NotFound());
+  console.log('inside here');
+  next(createError.NotFound());
+});
+
+//Error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
 app.listen(PORT, () => {
